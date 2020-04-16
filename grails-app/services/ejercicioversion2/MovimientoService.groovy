@@ -36,12 +36,12 @@ class MovimientoService {
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy") // 01-01-2020
         movinientoInstance.fechaVendido = sdf.parse(json.fecchaVendido as String)
 
-        List detalles = json.detalles
+        List<Detalle> detalles = Arrays.asList(json.detalles) as List<Detalle>
         for (int i = 0; i < detalles.size(); i++) {
             Detalle detalle = new Detalle()
             detalle.cantidad = detalles[i].cantidad
             if (detalles[i]?.articulo instanceof Integer) {
-                detalle.articulo = articuloService.get(detalles[i]?.articulo)
+                detalle.articulo = articuloService.get(detalles[i]?.articulo as Long)
             } else {
                 detalle.articulo = articuloService.get(detalles[i].articulo.id as long)
             }
