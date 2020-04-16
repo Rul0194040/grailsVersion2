@@ -7,7 +7,8 @@ class MovimientoController {
     def index() {
         List<Movimiento> list = movimientoService.list()
         long count = list.size()
-        respond([data: list, count: count])
+       respond([data: list, count: count])
+
     }
 
     def show(long id) {

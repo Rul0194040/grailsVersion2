@@ -9,8 +9,8 @@ class Movimiento {
     static hasMany = [detalles: Detalle]
 
     static constraints = {
-        descuento(min: 0d, max: 15d)
-        total(min: 3d, max: 50d)
+        descuento(min: 0d, max: 0.15d)
+        total(min: 3d)
     }
 
     Map obtieneDatos() {

@@ -34,24 +34,45 @@ class MovimientoService {
         movinientoInstance.descuento = json.descuento as double
         movinientoInstance.total = 0
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy") // 01-01-2020
-        movinientoInstance.fechaVendido = sdf.parse(json.fecchaVendido as String)
-
+        movinientoInstance.fechaVendido = sdf.parse(json.fechaVendido as String)
         List<Detalle> detalles = Arrays.asList(json.detalles) as List<Detalle>
-        for (int i = 0; i < detalles.size(); i++) {
-            Detalle detalle = new Detalle()
-            detalle.cantidad = detalles[i].cantidad
-            if (detalles[i]?.articulo instanceof Integer) {
-                detalle.articulo = articuloService.get(detalles[i]?.articulo as Long)
-            } else {
-                detalle.articulo = articuloService.get(detalles[i].articulo.id as long)
+
+
+        if (movinientoInstance.id != null){
+            for (int i = 0; i < detalles.size(); i++) {
+                Detalle detalle = detalles.get(i)
+                detalle.cantidad = detalles[i].cantidad
+                if (detalles[i]?.articulo instanceof Integer) {
+                    detalle.articulo = articuloService.get(detalles[i]?.articulo as Long)
+                } else {
+                    detalle.articulo = articuloService.get(detalles[i].articulo.id as long)
+                }
+                if (detalle.articulo != null) {
+                    detalle.precio = detalle.articulo.precio
+                    double descuento = ((detalle.cantidad * detalle.precio)*movinientoInstance.descuento)
+                    movinientoInstance.total += (detalle.cantidad * detalle.precio) - descuento
+                    detalle.movimiento = movinientoInstance
+                }
             }
-            if (detalle.articulo != null) {
-                detalle.precio = detalle.articulo.precio
-                movinientoInstance.total += (detalle.cantidad * detalle.precio) - movinientoInstance.descuento
-                detalle.movimiento = movinientoInstance
-                movinientoInstance.addToDetalles(detalle)
+        }else{
+            for (int i = 0; i < detalles.size(); i++) {
+                Detalle detalle = new Detalle()
+                detalle.cantidad = detalles[i].cantidad
+                if (detalles[i]?.articulo instanceof Integer) {
+                    detalle.articulo = articuloService.get(detalles[i]?.articulo as Long)
+                } else {
+                    detalle.articulo = articuloService.get(detalles[i].articulo.id as long)
+                }
+                if (detalle.articulo != null) {
+                    detalle.precio = detalle.articulo.precio
+                    double descuento = ((detalle.cantidad * detalle.precio)*movinientoInstance.descuento)
+                    movinientoInstance.total += (detalle.cantidad * detalle.precio) - descuento
+                    detalle.movimiento = movinientoInstance
+                }
             }
         }
+
+
 
         return movinientoInstance
     }
