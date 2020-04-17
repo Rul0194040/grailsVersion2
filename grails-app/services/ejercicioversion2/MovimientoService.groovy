@@ -65,6 +65,7 @@ class MovimientoService {
 
                     if (detalles[i].id == null) {
                         detalle.movimiento = movinientoInstance
+                        movinientoInstance.addToDetalles(detalle)
                     }
                 }
             }
