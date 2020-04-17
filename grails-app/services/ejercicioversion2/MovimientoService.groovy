@@ -33,8 +33,9 @@ class MovimientoService {
     Movimiento build(Movimiento movinientoInstance, Map json) {
 
 
-            double aux = 0
-            double total = 0
+            double subtotal = 0
+            double total
+            double descuento
             movinientoInstance.total = 0
             movinientoInstance.fechaVendido = new Date()
 
@@ -56,8 +57,10 @@ class MovimientoService {
                 if (detalle.articulo != null) {
                     detalle.precio = detalle.articulo.precio
 
-                    aux += detalle.cantidad * detalle.precio
-                    total = aux-movinientoInstance.descuento
+                    subtotal += detalle.cantidad * detalle.precio
+                    descuento = subtotal*movinientoInstance.descuento
+                    total = subtotal-descuento
+
                     movinientoInstance.total = total
 
                     if (detalles[i].id == null) {
