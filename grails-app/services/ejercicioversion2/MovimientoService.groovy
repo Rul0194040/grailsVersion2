@@ -32,7 +32,7 @@ class MovimientoService {
 
     Movimiento build(Movimiento movinientoInstance, Map json) {
 
-        if(movinientoInstance.id == null){
+
             double aux = 0
             double total = 0
             movinientoInstance.total = 0
@@ -55,7 +55,7 @@ class MovimientoService {
                 }
                 if (detalle.articulo != null) {
                     detalle.precio = detalle.articulo.precio
-                    
+
                     aux += detalle.cantidad * detalle.precio
                     total = aux-movinientoInstance.descuento
                     movinientoInstance.total = total
@@ -65,7 +65,7 @@ class MovimientoService {
                     }
                 }
             }
-        }
+
 
         return movinientoInstance
     }
