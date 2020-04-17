@@ -33,7 +33,6 @@ class MovimientoService {
     Movimiento build(Movimiento movinientoInstance, Map json) {
 
         if(movinientoInstance.id == null){
-            movinientoInstance = new Movimiento()
             movinientoInstance.total = 0
             movinientoInstance.fechaVendido = new Date()
 
