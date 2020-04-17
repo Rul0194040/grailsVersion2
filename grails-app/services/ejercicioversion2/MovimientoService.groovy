@@ -33,31 +33,10 @@ class MovimientoService {
     Movimiento build(Movimiento movinientoInstance, Map json) {
 
         if(movinientoInstance.id == null){
+            double aux = 0
+            double total = 0
             movinientoInstance.total = 0
             movinientoInstance.fechaVendido = new Date()
-
-
-
-            List detalles = json.detalles
-            for (int i = 0; i < detalles.size(); i++) {
-                Detalle detalle = new Detalle()
-                detalle.cantidad = detalles[i].cantidad
-                if (detalles[i]?.articulo instanceof Integer) {
-                    detalle.articulo = articuloService.get(detalles[i]?.articulo)
-                } else {
-                    detalle.articulo = articuloService.get(detalles[i].articulo.id as long)
-                }
-                if (detalle.articulo != null) {
-                    detalle.precio = detalle.articulo.precio
-                    movinientoInstance.total += (detalle.cantidad * detalle.precio)*((detalle.cantidad * detalle.precio)*movinientoInstance.descuento)
-                    detalle.movimiento = movinientoInstance
-                    movinientoInstance.addToDetalles(detalle)
-                }
-            }
-
-
-        }else{
-            movinientoInstance.total = 0
 
             List detalles = json.detalles
             println "detalles: $detalles"
@@ -76,11 +55,13 @@ class MovimientoService {
                 }
                 if (detalle.articulo != null) {
                     detalle.precio = detalle.articulo.precio
-                    movinientoInstance.total += (detalle.cantidad * detalle.precio)*((detalle.cantidad * detalle.precio)*movinientoInstance.descuento)
+                    
+                    aux += detalle.cantidad * detalle.precio
+                    total = aux-movinientoInstance.descuento
+                    movinientoInstance.total = total
 
                     if (detalles[i].id == null) {
                         detalle.movimiento = movinientoInstance
-                        movinientoInstance.addToDetalles(detalle)
                     }
                 }
             }
